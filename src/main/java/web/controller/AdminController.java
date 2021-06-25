@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import web.model.User;
 import web.userService.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -22,7 +23,7 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @GetMapping()
+    @GetMapping("/users")
     public String showAllUsers(Model model) {
         List<User> userList = userService.getAllUser();
         model.addAttribute("users", userList);
@@ -30,11 +31,21 @@ public class AdminController {
     }
 
     @GetMapping("details/{id}")
-    public String userDetails(@PathVariable("id") Long id, Model model) {
+    public String adminDetails(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "details";
+        return "detailsForAdmin";
     }
 
+    @GetMapping("/user/details/{id}")
+    public String userDetails(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "detailsAll";
+    }
 
-
+    @GetMapping()
+    public String homePage(Principal principal, Model model) {
+        Long id = userService.getUserByName(principal.getName()).getId();
+        model.addAttribute("id", id);
+        return "profileAdmin";
+    }
 }

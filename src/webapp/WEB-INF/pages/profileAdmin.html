@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User details</title>
+  <style>
+    table th, table td {
+      padding: 15px;
+    }
+  </style>
+</head>
+<body>
+<h1>Admin home page</h1>
+<br/>
+<td> <a th:href="@{admin/details/{id}(id=${id})}"><input type="button" value="View my profile" /></a></td>
+<br/><br/><br/>
+<td> <a th:href="@{admin/users}"><input type="button" value="View all users" /></a></td>
+<br/><br/>
+<input type="button" value="Log out" onclick="window.location.href='/logout'"/>
+</body>
+</html>

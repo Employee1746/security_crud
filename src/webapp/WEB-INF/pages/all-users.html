@@ -26,12 +26,16 @@
     <td th:utext="${user.surname}">Surname</td>
     <td th:utext="${user.email}">Email</td>
     <td th:utext="${user.password}">Password</td>
-    <td> <a th:href="@{admin/details/{id}(id=${user.id})}"><input type="button" value="Details" /></a></td>
-    <td> <a th:href="@{admin/update/{id}(id=${user.id})}"><input type="button" value="Update user" /></a></td>
+    <td> <a th:href="@{/admin/user/details/{id}(id=${user.id})}"><input type="button" value="Details" /></a></td>
+    <td> <a th:href="@{/update/{id}(id=${user.id})}"><input type="button" value="Update user" /></a></td>
     <td> <form th:method="DELETE" th:action="@{admin/delete/{id}(id=${user.id})}"><input type="submit" value="Delete user"/></form></td>
   </tr>
 </table>
 <br/>
 <input type="button" value="Add user" onclick="window.location.href='/create'"/>
+<br/><br/><br/>
+<input type="button" value="Back" onclick="window.location.href='/admin'"/>
+<br/><br/><br/>
+<input type="button" value="Log out" onclick="window.location.href='/logout'"/>
 </body>
 </html>
