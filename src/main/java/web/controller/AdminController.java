@@ -3,12 +3,10 @@ package web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import web.model.User;
-import web.userService.UserService;
+import web.services.rolerService.RoleService;
+import web.services.userService.UserService;
 
 import java.security.Principal;
 import java.util.List;
@@ -18,10 +16,12 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/users")
@@ -29,6 +29,20 @@ public class AdminController {
         List<User> userList = userService.getAllUser();
         model.addAttribute("users", userList);
         return "all-users";
+    }
+
+    @GetMapping("/create")
+    public String createForm(@ModelAttribute("user") User user, Model model) {
+        model.addAttribute("roles", roleService.getRolesList());
+        return "createUser-form";
+    }
+
+    @PostMapping()
+    public String createUser(@ModelAttribute("user") User user,
+                             @RequestParam("chosenRoles") String[] chosenRoles) {
+        user.setRoles(roleService.getRolesFromArray(chosenRoles));
+        userService.saveUser(user);
+        return "redirect:/admin/users";
     }
 
     @GetMapping("details/{id}")
@@ -51,14 +65,24 @@ public class AdminController {
     }
 
     @GetMapping("/user/update/{id}")
-    public String updateUserForm(@PathVariable("id") Long id, Model model) {
+    public String updateUserForm(@PathVariable("id") Long id,
+                                 Model model) {
         model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("roles", roleService.getRolesList());
         return "/user-update";
     }
 
     @PostMapping("/user/update")
-    public String updateUser(User user) {
+    public String updateUser(@ModelAttribute("user") User user,
+                             @RequestParam("updatedRoles") String[] updatedRoles) {
+        user.setRoles(roleService.getRolesFromArray(updatedRoles));
         userService.updateUser(user);
+        return "redirect:/admin/users";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
+        userService.deleteUser(id);
         return "redirect:/admin/users";
     }
 }

@@ -4,8 +4,13 @@
   <meta charset="UTF-8">
   <title>All users</title>
   <style>
-    table th, table td {
-      padding: 15px;
+    table {
+      width: 300px; /* Ширина таблицы */
+      border: 1px solid green; /* Рамка вокруг таблицы */
+    }
+    td {
+      text-align: center; /* Выравниваем текст по центру ячейки */
+      padding: 10px;
     }
   </style>
 </head>
@@ -28,11 +33,11 @@
     <td th:utext="${user.password}">Password</td>
     <td> <a th:href="@{/admin/user/details/{id}(id=${user.id})}"><input type="button" value="Details" /></a></td>
     <td> <a th:href="@{/admin/user/update/{id}(id=${user.id})}"><input type="button" value="Update user" /></a></td>
-    <td> <form th:method="DELETE" th:action="@{admin/delete/{id}(id=${user.id})}"><input type="submit" value="Delete user"/></form></td>
+    <td> <form th:method="DELETE" th:action="@{/admin/delete/{id}(id=${user.id})}"><input type="submit" value="Delete user"/></form></td>
   </tr>
 </table>
 <br/>
-<input type="button" value="Add user" onclick="window.location.href='/create'"/>
+<input type="button" value="Add user" onclick="window.location.href='/admin/create'"/>
 <br/><br/><br/>
 <input type="button" value="Back" onclick="window.location.href='/admin'"/>
 <br/><br/><br/>

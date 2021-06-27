@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import web.model.User;
-import web.userService.UserService;
+import web.services.userService.UserService;
 
 import java.security.Principal;
 
@@ -45,6 +45,7 @@ public class UserController {
     public String index() {
         return "index";
     }
+
     @GetMapping("/logout")
     public String logout(){
         return "/logout";

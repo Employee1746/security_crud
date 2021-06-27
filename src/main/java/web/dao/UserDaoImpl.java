@@ -1,4 +1,4 @@
-package web.userDAO;
+package web.dao;
 
 import org.springframework.stereotype.Repository;
 import web.model.User;
@@ -39,14 +39,9 @@ public class UserDaoImpl implements UserDao {
         entityManager.merge(user);
     }
 
-    /**
-     * new
-    */
-
     @Override
     public User getUserByName(String username) {
         return entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
                 .setParameter("username", username).getSingleResult();
     }
-
 }
