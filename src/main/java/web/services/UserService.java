@@ -1,4 +1,4 @@
-package web.services.userService;
+package web.services;
 
 import web.model.User;
 

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import web.model.User;
-import web.services.userService.UserService;
+import web.services.UserService;
 
 import java.security.Principal;
 
@@ -36,7 +36,6 @@ public class UserController {
     @GetMapping("user/profile")
     public String homePage(Principal principal, Model model) {
         Long id = userService.getUserByName(principal.getName()).getId();
-
         model.addAttribute("id", id);
         return "profile";
     }

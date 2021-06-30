@@ -1,12 +1,13 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
-import web.services.rolerService.RoleService;
-import web.services.userService.UserService;
+import web.services.RoleService;
+import web.services.UserService;
 
 import java.security.Principal;
 import java.util.List;
@@ -17,11 +18,13 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService) {
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/users")
@@ -41,6 +44,7 @@ public class AdminController {
     public String createUser(@ModelAttribute("user") User user,
                              @RequestParam("chosenRoles") String[] chosenRoles) {
         user.setRoles(roleService.getRolesFromArray(chosenRoles));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.saveUser(user);
         return "redirect:/admin/users";
     }
@@ -76,6 +80,7 @@ public class AdminController {
     public String updateUser(@ModelAttribute("user") User user,
                              @RequestParam("updatedRoles") String[] updatedRoles) {
         user.setRoles(roleService.getRolesFromArray(updatedRoles));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userService.updateUser(user);
         return "redirect:/admin/users";
     }

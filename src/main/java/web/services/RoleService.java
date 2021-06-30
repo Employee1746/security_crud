@@ -1,4 +1,4 @@
-package web.services.rolerService;
+package web.services;
 
 import web.model.Role;
 
