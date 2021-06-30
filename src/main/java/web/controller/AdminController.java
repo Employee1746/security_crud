@@ -1,7 +1,6 @@
 package web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +17,11 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/users")
@@ -43,9 +40,7 @@ public class AdminController {
     @PostMapping()
     public String createUser(@ModelAttribute("user") User user,
                              @RequestParam("chosenRoles") String[] chosenRoles) {
-        user.setRoles(roleService.getRolesFromArray(chosenRoles));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.saveUser(user);
+        userService.saveUser(user, chosenRoles);
         return "redirect:/admin/users";
     }
 
@@ -79,9 +74,7 @@ public class AdminController {
     @PostMapping("/user/update")
     public String updateUser(@ModelAttribute("user") User user,
                              @RequestParam("updatedRoles") String[] updatedRoles) {
-        user.setRoles(roleService.getRolesFromArray(updatedRoles));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.updateUser(user);
+        userService.updateUser(user, updatedRoles);
         return "redirect:/admin/users";
     }
 
